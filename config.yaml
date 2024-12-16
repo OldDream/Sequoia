@@ -1,0 +1,11 @@
+# cron, 控制定时用的  
+cron: false  
+# self, 只检查myStocks.txt 中的股票 
+self: true
+data_dir: "data"
+end_date: 
+
+push:
+  enable: false
+  wxpusher_uid: ""
+  wxpusher_token: ""

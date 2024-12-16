@@ -7,6 +7,5 @@
 *.pyc
 .DS_Store
 storage/Positions
-config.yaml
 /ta-lib
 logs/*
