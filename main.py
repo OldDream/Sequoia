@@ -6,7 +6,7 @@ import work_flow
 import settings
 import schedule
 import time
-import datetime
+from datetime import datetime 
 from pathlib import Path
 
 
@@ -14,8 +14,12 @@ def job():
     if utils.is_weekday():
         work_flow.prepare()
 
+# 创建logs目录
+Path('logs').mkdir(exist_ok=True)
 
-logging.basicConfig(format='%(asctime)s %(message)s', filename='sequoia.log')
+current_time = datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+log_filename = f'logs/sequoia_{current_time}.log'
+logging.basicConfig(format='%(asctime)s %(message)s', filename=log_filename)
 logging.getLogger().setLevel(logging.INFO)
 settings.init()
 
@@ -26,5 +30,8 @@ if settings.config['cron']:
     while True:
         schedule.run_pending()
         time.sleep(1)
+elif settings.config['self']: 
+    EXEC_TIME = "15:15"
+    work_flow.prepare(True)
 else:
     work_flow.prepare()

@@ -17,12 +17,24 @@ import time
 import datetime
 
 
-def prepare():
+def prepare(isSelf=False):
     logging.info("************************ process start ***************************************")
-    all_data = ak.stock_zh_a_spot_em()
-    subset = all_data[['代码', '名称']]
-    stocks = [tuple(x) for x in subset.values]
-    statistics(all_data, stocks)
+    stocks = []
+    # 从文件读取股票数据
+    if isSelf:
+        with open('myStocks.txt', 'r', encoding='utf-8') as f:
+            for line in f:
+                # 分割每行数据，去除空白字符
+                parts = [part.strip() for part in line.strip().split('\t')]
+                if len(parts) >= 2:
+                    code = parts[0]
+                    name = parts[1]
+                    stocks.append((code, name))
+    else:
+        all_data = ak.stock_zh_a_spot_em()
+        subset = all_data[['代码', '名称']]
+        stocks = [tuple(x) for x in subset.values] # [(代码1, 名称1), (代码2, 名称2), ...]
+        statistics(all_data, stocks)
 
     strategies = {
         '放量上涨': enter.check_volume,
@@ -80,5 +92,6 @@ def statistics(all_data, stocks):
 
     msg = "涨停数：{}   跌停数：{}\n涨幅大于5%数：{}  跌幅大于5%数：{}".format(limitup, limitdown, up5, down5)
     push.statistics(msg)
+
 
 
