@@ -1,7 +1,9 @@
 # cron, 控制定时用的  
 cron: false  
 # self, 只检查myStocks.txt 中的股票 
-self: true
+self: false
+# back, 执行回测
+back: true
 data_dir: "data"
 end_date: 
 
